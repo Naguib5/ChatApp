@@ -1,3 +1,4 @@
+import 'package:chatapp/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,13 +10,6 @@ class ChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Chat App'),
-        ),
-      ),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
   }
 }
