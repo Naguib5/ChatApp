@@ -13,19 +13,29 @@ class LoginPage extends StatelessWidget {
       backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(children: [
+        child: ListView(children: [
           const SizedBox(
             height: 100,
           ),
-          Image.asset('assets/images/scholar.png'),
+          Image.asset(
+            'assets/images/scholar.png',
+            height: 100,
+          ),
           const SizedBox(
             height: 12,
           ),
-          const Text('Chat',
-              style: TextStyle(
-                  fontSize: 32, color: Colors.white, fontFamily: 'Pacifico')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Chat',
+                  style: TextStyle(
+                      fontSize: 32,
+                      color: Colors.white,
+                      fontFamily: 'Pacifico')),
+            ],
+          ),
           const SizedBox(
-            height: 90,
+            height: 60,
           ),
           const Row(
             children: [
