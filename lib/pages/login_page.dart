@@ -60,10 +60,7 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.white)),
               TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const RegisterPage();
-                    }));
+                    Navigator.pushNamed(context, 'RegisterPage');
                   },
                   child: const Text(
                     'Register',

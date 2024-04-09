@@ -58,7 +58,9 @@ class RegisterPage extends StatelessWidget {
               const Text('already have an account?',
                   style: TextStyle(fontSize: 16, color: Colors.white)),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: const Text(
                     'Login',
                     style: TextStyle(
