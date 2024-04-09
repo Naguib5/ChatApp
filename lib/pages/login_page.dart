@@ -1,3 +1,4 @@
+import 'package:chatapp/constants.dart';
 import 'package:chatapp/pages/register_page.dart';
 import 'package:chatapp/widgets/custom_button.dart';
 import 'package:chatapp/widgets/custom_text_field.dart';
@@ -5,11 +6,11 @@ import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
+  static const String id = 'LoginPage';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2B475E),
+      backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(children: [
@@ -60,13 +61,13 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.white)),
               TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, 'RegisterPage');
+                    Navigator.pushNamed(context, RegisterPage.id);
                   },
                   child: const Text(
                     'Register',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF00E676),
+                      color: kSecondaryColor,
                     ),
                   ))
             ],

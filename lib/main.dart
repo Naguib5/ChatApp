@@ -14,9 +14,9 @@ class ChatApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          'LoginPage': (context) => LoginPage(),
-          'RegisterPage': (context) => RegisterPage(),
+          LoginPage.id: (context) => LoginPage(),
+          RegisterPage.id: (context) => RegisterPage(),
         },
-        initialRoute: 'LoginPage');
+        initialRoute: LoginPage.id);
   }
 }
