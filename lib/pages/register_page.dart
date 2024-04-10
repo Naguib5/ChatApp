@@ -1,15 +1,18 @@
+import 'package:chatapp/constants.dart';
 import 'package:chatapp/widgets/custom_button.dart';
 import 'package:chatapp/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  RegisterPage({super.key});
   static const String id = 'RegisterPage';
-
+  String? email;
+  String? password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2B475E),
+      backgroundColor: kPrimaryColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView(children: [
@@ -46,18 +49,29 @@ class RegisterPage extends StatelessWidget {
             height: 26,
           ),
           CustomTextField(
+            onChanged: (data) {
+              email = data;
+            },
             hintText: 'Email',
           ),
           const SizedBox(
             height: 16,
           ),
           CustomTextField(
+            onChanged: (data) {
+              password = data;
+            },
             hintText: 'Password',
           ),
           const SizedBox(
             height: 30,
           ),
           CustomButton(
+            onPressed: () async {
+              var auth = FirebaseAuth.instance;
+              auth.createUserWithEmailAndPassword(
+                  email: email!, password: password!);
+            },
             text: 'Register',
           ),
           const SizedBox(
@@ -76,7 +90,7 @@ class RegisterPage extends StatelessWidget {
                     'Login',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF00E676),
+                      color: kSecondaryColor,
                     ),
                   ))
             ],
@@ -84,6 +98,5 @@ class RegisterPage extends StatelessWidget {
         ]),
       ),
     );
-    ;
   }
 }

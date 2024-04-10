@@ -2,7 +2,9 @@ import 'package:chatapp/constants.dart';
 import 'package:chatapp/pages/register_page.dart';
 import 'package:chatapp/widgets/custom_button.dart';
 import 'package:chatapp/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -59,6 +61,9 @@ class LoginPage extends StatelessWidget {
             height: 30,
           ),
           CustomButton(
+            onPressed: () {
+              signInWithGoogle();
+            },
             text: 'Login',
           ),
           const SizedBox(
@@ -81,9 +86,31 @@ class LoginPage extends StatelessWidget {
                     ),
                   ))
             ],
-          )
+          ),
+          IconButton(
+              onPressed: () async {
+                await signOutWithgoogle();
+              },
+              icon: Icon(Icons.sign_language_outlined, color: Colors.white)),
         ]),
       ),
     );
+  }
+
+  signInWithGoogle() async {
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    print(userCredential.user?.displayName);
+  }
+
+  Future<void> signOutWithgoogle() async {
+    await GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
   }
 }
