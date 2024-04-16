@@ -1,9 +1,12 @@
 import 'package:chatapp/constants.dart';
 import 'package:chatapp/pages/register_page.dart';
+import 'package:chatapp/widgets/app_outlined_button.dart';
 import 'package:chatapp/widgets/custom_button.dart';
 import 'package:chatapp/widgets/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatelessWidget {
@@ -17,7 +20,7 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView(children: [
           const SizedBox(
-            height: 100,
+            height: 80,
           ),
           Image.asset(
             'assets/images/scholar.png',
@@ -26,7 +29,7 @@ class LoginPage extends StatelessWidget {
           const SizedBox(
             height: 12,
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Chat',
@@ -37,7 +40,7 @@ class LoginPage extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 60,
+            height: 30,
           ),
           const Row(
             children: [
@@ -61,11 +64,11 @@ class LoginPage extends StatelessWidget {
             height: 30,
           ),
           CustomButton(
-            onPressed: () {
-              signInWithGoogle();
-            },
+            onPressed: () {},
             text: 'Login',
           ),
+          _dividerWidget(),
+          _socialLoginButtonsWidget(),
           const SizedBox(
             height: 10,
           ),
@@ -91,10 +94,104 @@ class LoginPage extends StatelessWidget {
               onPressed: () async {
                 await signOutWithgoogle();
               },
-              icon: Icon(Icons.sign_language_outlined, color: Colors.white)),
+              icon: const Icon(Icons.sign_language_outlined,
+                  color: Colors.white)),
         ]),
       ),
     );
+  }
+
+  Widget _socialLoginButtonsWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        children: [
+          _socialButtonWidget(
+              onPressed: () {
+                signInWithGoogle();
+              },
+              image: KGoogleIcon,
+              title: 'Login With Google'),
+          const SizedBox(height: 16),
+          _socialButtonWidget(
+              onPressed: () {
+                signInWithFacebook();
+              },
+              image: kFacebookIcon,
+              title: 'Login With Facebook'),
+        ],
+      ),
+    );
+  }
+
+  Widget _socialButtonWidget(
+      {required String image,
+      required String title,
+      required void Function()? onPressed}) {
+    return AppOutlinedButton(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(image),
+          const SizedBox(width: 10),
+          Text(
+            title,
+            style: TextStyle(color: Colors.white),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _dividerWidget() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      child: Row(
+        children: [
+          Expanded(child: Divider(thickness: 1)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              'or login with',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Expanded(child: Divider(thickness: 1)),
+        ],
+      ),
+    );
+  }
+
+  signInWithFacebook() async {
+    try {
+      // Trigger the sign-in flow
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      // Check if the user has canceled the login process
+      if (loginResult.status == LoginStatus.cancelled) {
+        // Handle canceled login
+        return;
+      }
+
+      // Get the access token from the login result
+      final AccessToken accessToken = loginResult.accessToken!;
+
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(accessToken.token);
+
+      // Sign in with the credential
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+
+      // Access user details if needed
+      final User? user = userCredential.user;
+      print('User signed in with Facebook: ${user?.displayName}');
+    } catch (e) {
+      print('Error signing in with Facebook: $e');
+      // Handle sign-in error
+    }
   }
 
   signInWithGoogle() async {
