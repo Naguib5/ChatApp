@@ -1,4 +1,5 @@
 import 'package:chatapp/constants.dart';
+import 'package:chatapp/widgets/chat_buble.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
@@ -18,6 +19,7 @@ class ChatPage extends StatelessWidget {
           )
         ]),
       ),
+      body: ChatBuble(),
     );
   }
 }
