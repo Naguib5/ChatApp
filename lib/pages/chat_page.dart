@@ -19,7 +19,34 @@ class ChatPage extends StatelessWidget {
           )
         ]),
       ),
-      body: ChatBuble(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(itemBuilder: (context, index) {
+              return ChatBuble();
+            }),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              decoration: InputDecoration(
+                  suffixIcon: Icon(
+                    Icons.send,
+                    color: kPrimaryColor,
+                  ),
+                  hintText: 'Send Message',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: kPrimaryColor),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: kPrimaryColor),
+                  )),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
