@@ -5,3 +5,5 @@ const kSecondaryColor = Color(0xFF00E676);
 const KGoogleIcon = 'assets/images/google_icon.svg';
 const kFacebookIcon = 'assets/images/facebook_icon.svg';
 const klogo = "assets/images/scholar.png";
+const kMessagesCollection = "messages";
+const kMessage = "message";
