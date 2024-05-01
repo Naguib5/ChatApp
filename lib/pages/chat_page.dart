@@ -6,20 +6,31 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatPage extends StatelessWidget {
   static const String id = 'chat_page';
+
   CollectionReference messages =
       FirebaseFirestore.instance.collection(kMessagesCollection);
+
   TextEditingController controller = TextEditingController();
+
+  final _scrollController = ScrollController();
+
   List<Message> messageList = [];
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: messages.get(),
+    var email = ModalRoute.of(context)!.settings.arguments;
+    return StreamBuilder(
+        stream: messages
+            .orderBy(
+              kCreatedAt,
+              descending: true,
+            )
+            .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             for (int i = 0; i < snapshot.data!.docs.length; i++) {
               messageList.add(Message.fromJson(snapshot.data!.docs[i]));
             }
-            print(snapshot.data!.docs[0]['message']);
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -37,22 +48,33 @@ class ChatPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ListView.builder(
+                        reverse: true,
+                        controller: _scrollController,
                         itemCount: messageList.length,
                         itemBuilder: (context, index) {
-                          return ChatBuble(
-                            message: messageList[index],
-                          );
+                          return messageList[index].id == email
+                              ? ChatBuble(
+                                  message: messageList[index],
+                                )
+                              : ChatBubleForFriend(message: messageList[index]);
                         }),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(16),
                     child: TextField(
                       controller: controller,
                       onSubmitted: (data) {
                         messages.add({
-                          'message': data,
+                          kMessage: data,
+                          kCreatedAt: DateTime.now(),
+                          kId: email,
                         });
                         controller.clear();
+                        _scrollController.animateTo(
+                          0,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn,
+                        );
                       },
                       decoration: InputDecoration(
                           suffixIcon: Icon(
@@ -74,8 +96,10 @@ class ChatPage extends StatelessWidget {
               ),
             );
           } else {
-            return CircularProgressIndicator(
-              color: kPrimaryColor,
+            return Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
             );
           }
         });

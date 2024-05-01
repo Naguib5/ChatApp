@@ -7,3 +7,5 @@ const kFacebookIcon = 'assets/images/facebook_icon.svg';
 const klogo = "assets/images/scholar.png";
 const kMessagesCollection = "messages";
 const kMessage = "message";
+const kCreatedAt = 'createdAt';
+const kId = 'id';

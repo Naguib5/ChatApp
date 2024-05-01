@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:chatapp/constants.dart';
 import 'package:chatapp/helper/show_snack_bar.dart';
 import 'package:chatapp/pages/chat_page.dart';
@@ -77,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 height: 16,
               ),
               CustomFormTextField(
+                obscureText: true,
                 onChanged: (data) {
                   password = data;
                 },
@@ -92,7 +92,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     setState(() {});
                     try {
                       await userRegister();
-                      Navigator.pushNamed(context, ChatPage.id);
+                      Navigator.pushNamed(context, ChatPage.id,
+                          arguments: email);
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         showSnackBar(
